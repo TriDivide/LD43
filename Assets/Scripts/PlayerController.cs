@@ -32,8 +32,15 @@ public class PlayerController: MonoBehaviour {
 
 	}
 
+    private void OnCollisionEnter(Collision collision) {
+        if (collision.gameObject.name == "wall") {
+            playerRigidBody.velocity = Vector2.zero;
+        }
+
+        print("collision detected");
+    }
+
     void FixedUpdate() {
         playerRigidBody.MovePosition(playerRigidBody.position + movementVelocity * Time.fixedDeltaTime);
-
     }
 }
