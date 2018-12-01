@@ -7,23 +7,25 @@ public class Player  {
 
     public enum ClassType {
         Fighter,
-        Defender,
-        Magician
+        Defender
     }
 
-    ClassType playerClass;
+    public ClassType playerClass;
 
-    float health = 100f;
-    float magic = 100f;
-    List<System.Object> powerUps = new List<System.Object>();
-    float attackStat = 10f;
-    float defenceStat = 10f;
-    float magicStat = 10f;
-    List<System.Object> invenvory = new List<System.Object>();
-    String name = "";
+    public float health = 100f;
+    public List<System.Object> powerUps = new List<System.Object>();
+    public float attackStat = 10f;
+    public float defenceStat = 10f;
+    public List<System.Object> invenvory = new List<System.Object>();
+    public String name = "";
+    public float baseDamage = 10f;
 
    
      
+    public void ReceiveDamage(float damageReceived) {
+        health -= (damageReceived / (defenceStat / 10));
+    }
+
 
 
 
