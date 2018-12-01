@@ -27,6 +27,11 @@ public class Player  {
     }
 
 
+    public float damageDealt() {
+        return baseDamage * (attackStat / 10);
+    }
+
+
 
 
     
