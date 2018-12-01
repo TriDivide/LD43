@@ -1,16 +1,22 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
+public class PlayerModel {
 
-public class PlayerModel : MonoBehaviour {
+    private static PlayerModel _instance;
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+    private static PlayerModel Instance {
+        get {
+            if (_instance == null) {
+                _instance = new PlayerModel();
+            }
+            return _instance;
+        }
+    }
+
+    private PlayerModel() {
+
+    }
+
 }
