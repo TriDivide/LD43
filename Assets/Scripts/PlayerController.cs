@@ -18,6 +18,8 @@ public class PlayerController: MonoBehaviour {
 
     private GameObject selectedDoor;
 
+    private bool reachedExit = false;
+
 
 	// Use this for initialization
 	void Start () {
@@ -52,7 +54,10 @@ public class PlayerController: MonoBehaviour {
             print("e was pressed");
             performSacrifice(40f);
             Destroy(this.selectedDoor);
+        }
 
+        if (Input.GetKeyDown("e") && reachedExit) {
+            print("finished the level");
         }
 
 	}
@@ -70,6 +75,9 @@ public class PlayerController: MonoBehaviour {
             canSacrifice = false;
             selectedDoor = null;
         }
+        else if (collision.gameObject.tag == "exit") {
+            reachedExit = false;
+        }
         
     }
 
@@ -79,6 +87,11 @@ public class PlayerController: MonoBehaviour {
             print("collided with door");
             canSacrifice = true;
             selectedDoor = collision.gameObject;
+        }
+
+        if (collision.gameObject.tag == "exit") {
+            print("collided with exit");
+            reachedExit = true;
         }
     }
 
