@@ -14,6 +14,11 @@ public class PlayerController: MonoBehaviour {
 
     public Image healthBar;
 
+    private bool canSacrifice = false;
+
+    private GameObject selectedDoor;
+
+
 	// Use this for initialization
 	void Start () {
         mCachedPlayer = PlayerModel.Instance.GetPlayer();
@@ -24,6 +29,8 @@ public class PlayerController: MonoBehaviour {
 
         }
         playerRigidBody = GetComponent<Rigidbody2D>();
+
+
 	}
 	
 	// Update is called once per frame
@@ -32,30 +39,46 @@ public class PlayerController: MonoBehaviour {
         Vector2 moveInput = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
         movementVelocity = moveInput.normalized * movementSpeed;
         
+        if (mCachedPlayer.health <= 0) {
+            Destroy(gameObject);
+        }
  
 
         if (Input.GetKeyDown("space")) {
             print("space was pressed");
         }
 
-        if (Input.GetKeyDown("e")) {
+        if (Input.GetKeyDown("e") && canSacrifice) {
             print("e was pressed");
-            TestTakeDamage();
+            performSacrifice(40f);
+            Destroy(this.selectedDoor);
+
         }
 
 	}
 
-    private void TestTakeDamage() {
-        mCachedPlayer.ReceiveDamage(20f);
+    private void performSacrifice(float sacrificeAmount) {
+        mCachedPlayer.ReceiveDamage(sacrificeAmount);
         healthBar.fillAmount = mCachedPlayer.health / 100f;
 
 
     }
 
-    private void OnTriggerEnter(Collider other) {
+    private void OnTriggerExit2D(Collider2D collision) {
+        print("leaving collision"); 
+        if (collision.gameObject.tag == "door") {
+            canSacrifice = false;
+            selectedDoor = null;
+        }
+        
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision) {
         print("colliding");
-        if (other.gameObject.CompareTag("door")) {
-            print("colliding with door");
+        if (collision.gameObject.tag == "door") {
+            print("collided with door");
+            canSacrifice = true;
+            selectedDoor = collision.gameObject;
         }
     }
 
