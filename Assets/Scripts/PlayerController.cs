@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerController: MonoBehaviour {
 
@@ -9,8 +10,19 @@ public class PlayerController: MonoBehaviour {
     private Vector2 movementVelocity;
     private Rigidbody2D playerRigidBody;
 
+    public Player mCachedPlayer;
+
+    public Image healthBar;
+
 	// Use this for initialization
 	void Start () {
+        mCachedPlayer = PlayerModel.Instance.GetPlayer();
+
+        if (mCachedPlayer == null) {
+            PlayerModel.Instance.CreatePlayer("Test User", Player.ClassType.Fighter);
+            mCachedPlayer = PlayerModel.Instance.GetPlayer();
+
+        }
         playerRigidBody = GetComponent<Rigidbody2D>();
 	}
 	
@@ -28,16 +40,23 @@ public class PlayerController: MonoBehaviour {
 
         if (Input.GetKeyDown("e")) {
             print("e was pressed");
+            TestTakeDamage();
         }
 
 	}
 
-    private void OnCollisionEnter(Collision collision) {
-        if (collision.gameObject.name == "wall") {
-            playerRigidBody.velocity = Vector2.zero;
-        }
+    private void TestTakeDamage() {
+        mCachedPlayer.ReceiveDamage(20f);
+        healthBar.fillAmount = mCachedPlayer.health / 100f;
 
-        print("collision detected");
+
+    }
+
+    private void OnTriggerEnter(Collider other) {
+        print("colliding");
+        if (other.gameObject.CompareTag("door")) {
+            print("colliding with door");
+        }
     }
 
     void FixedUpdate() {

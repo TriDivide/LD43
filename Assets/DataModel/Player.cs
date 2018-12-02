@@ -31,6 +31,15 @@ public class Player  {
         return baseDamage * (attackStat / 10);
     }
 
+    public void SacraficeHealth(float sacrifice) {
+        health -= sacrifice;
+    }
+
+    public void RegenerateHealth(float regeneration) {
+        health += regeneration;
+        health = health >= 100 ? 100 : health;
+    }
+
 
 
 
